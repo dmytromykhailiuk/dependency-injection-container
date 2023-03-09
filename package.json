@@ -1,0 +1,19 @@
+{
+  "name": "@dmytro-mykhailiuk/dependency-injection-container",
+  "version": "1.0.0",
+  "description": "Dependency injection container",
+  "main": "index.js",
+  "scripts": {
+    
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dmytromykhailiuk/dependency-injection-container.git"
+  },
+  "author": "Dmytro Mykhailiuk",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dmytromykhailiuk/dependency-injection-container/issues"
+  },
+  "homepage": "https://github.com/dmytromykhailiuk/dependency-injection-container#readme"
+}
