@@ -7,14 +7,14 @@
 ## Installation
 
 ```sh
-npm i @dmytro-mykhailiuk/dependency-injection-container
+npm i @dmytromykhailiuk/dependency-injection-container
 ```
 
 ### Basic example of usage
 
 ```typescript
 
-import { Container } from '@dmytro-mykhailiuk/dependency-injection-container';
+import { Container } from '@dmytromykhailiuk/dependency-injection-container';
 
 class Logger {
   log(message: string) {
