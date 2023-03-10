@@ -6,10 +6,12 @@ export declare class Container {
     private providersWithParentDepsInInstances;
     private parentDepsInInstances;
     private requiredDepsForProvidersToRegister;
+    private multyProviders;
     private callbacks;
     constructor(parentContainer?: Container);
     onProviderRegistered(callback: (token: any) => void): void;
-    inject<T = any>(token: any): T;
+    isMultiProvider(token: any): boolean;
+    inject<T = any>(token: any, multi?: boolean): T;
     has(token: any): boolean;
     registerProviders(providers: ProviderOptions[]): void;
     registerProvider(providerOptions: ProviderOptions): void;

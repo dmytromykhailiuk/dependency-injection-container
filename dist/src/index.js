@@ -10,6 +10,7 @@ class Container {
         this.providersWithParentDepsInInstances = new Map();
         this.parentDepsInInstances = new Map();
         this.requiredDepsForProvidersToRegister = new Map();
+        this.multyProviders = new Map();
         this.callbacks = [];
         if (parentContainer) {
             parentContainer.onProviderRegistered((token) => this.tryRegisterProviders(token));
@@ -18,7 +19,19 @@ class Container {
     onProviderRegistered(callback) {
         this.callbacks.push(callback);
     }
-    inject(token) {
+    isMultiProvider(token) {
+        return this.multyProviders.has(token);
+    }
+    inject(token, multi = false) {
+        if (multi && !this.isMultiProvider(token)) {
+            return this.parentContainer ? this.parentContainer.inject(token, true) : [];
+        }
+        if (this.isMultiProvider(token)) {
+            return [
+                ...this.instances.get(token),
+                ...(this.parentContainer ? this.parentContainer.inject(token, true) : []),
+            ];
+        }
         if (this.instances.has(token)) {
             return this.instances.get(token);
         }
@@ -50,10 +63,13 @@ class Container {
         }
     }
     setInstance(token, insnance, multi = false) {
-        if (!multi && this.instances.has(token)) {
+        if ((!multi && this.instances.has(token)) || (this.instances.has(token) && !this.isMultiProvider(token))) {
             throw Error(`You already have ${token} token in your container!`);
         }
-        this.instances.set(token, !multi ? insnance : [...(this.inject(token) || []), insnance]);
+        if (multi) {
+            this.multyProviders.set(token, true);
+        }
+        this.instances.set(token, !multi ? insnance : [...(this.instances.get(token) || []), insnance]);
         this.tryRegisterDependentProviders(token);
         this.tryRegisterProviders(token);
     }

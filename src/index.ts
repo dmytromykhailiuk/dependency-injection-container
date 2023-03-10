@@ -16,6 +16,7 @@ export class Container {
 
   private parentDepsInInstances = new Map<any, Map<any, true>>();
   private requiredDepsForProvidersToRegister = new Map<any, Map<any, true>>();
+  private multyProviders = new Map<any, true>();
 
   private callbacks: ((token: any) => void)[] = [];
 
@@ -29,7 +30,22 @@ export class Container {
     this.callbacks.push(callback);
   }
 
-  public inject<T = any>(token: any): T {
+  public isMultiProvider(token: any): boolean {
+    return this.multyProviders.has(token);
+  }
+
+  public inject<T = any>(token: any, multi: boolean = false): T {
+    if (multi && !this.isMultiProvider(token)) {
+      return this.parentContainer ? this.parentContainer.inject<T>(token, true) : ([] as T);
+    }
+
+    if (this.isMultiProvider(token)) {
+      return [
+        ...this.instances.get(token),
+        ...(this.parentContainer ? (this.parentContainer.inject<T>(token, true) as any) : ([] as T)),
+      ] as T;
+    }
+
     if (this.instances.has(token)) {
       return this.instances.get(token) as T;
     }
@@ -66,11 +82,15 @@ export class Container {
   }
 
   private setInstance(token: any, insnance: any, multi: boolean = false) {
-    if (!multi && this.instances.has(token)) {
+    if ((!multi && this.instances.has(token)) || (this.instances.has(token) && !this.isMultiProvider(token))) {
       throw Error(`You already have ${token} token in your container!`);
     }
 
-    this.instances.set(token, !multi ? insnance : [...(this.inject(token) || []), insnance]);
+    if (multi) {
+      this.multyProviders.set(token, true);
+    }
+
+    this.instances.set(token, !multi ? insnance : [...(this.instances.get(token) || []), insnance]);
 
     this.tryRegisterDependentProviders(token);
     this.tryRegisterProviders(token);

@@ -177,7 +177,7 @@ container.registerProviders([
 
 container.registerProviders([
   {
-    useValue: 1
+    useValue: 1,
     multi: true,
     provider: 'Token'
   },
