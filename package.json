@@ -1,6 +1,6 @@
 {
   "name": "@dmytromykhailiuk/dependency-injection-container",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Solution for Dependency creation and management",
   "files": [
     "dist/src"
