@@ -1,4 +1,5 @@
-import { ProviderOptions } from './interfaces';
+import { UseFactoryProviderOptions, UseExistingProviderOptions, UseClassProviderOptions, UseValueProviderOptions, Class } from './interfaces';
+export type ProviderOptions<F = any, T extends Class = Class<F>> = UseClassProviderOptions | UseValueProviderOptions | UseExistingProviderOptions | UseFactoryProviderOptions | T;
 export declare class Container {
     private parentContainer?;
     private instances;

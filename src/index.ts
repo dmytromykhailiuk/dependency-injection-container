@@ -4,10 +4,16 @@ import {
   UseClassProviderOptions,
   UseValueProviderOptions,
   Class,
-  ProviderOptions,
   DefaultProviderOptionsWithDeps,
 } from './interfaces';
 import { isClass } from './helpers';
+
+export type ProviderOptions<F = any, T extends Class = Class<F>> =
+  | UseClassProviderOptions
+  | UseValueProviderOptions
+  | UseExistingProviderOptions
+  | UseFactoryProviderOptions
+  | T;
 
 export class Container {
   private instances = new Map();

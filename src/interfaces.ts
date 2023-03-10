@@ -32,10 +32,3 @@ export interface UseFactoryProviderOptions<T extends Class = any, F = any, R ext
 export interface DefaultProviderOptionsWithDeps<R extends Array<any> = any[]> extends DefaultProviderOptions {
   deps?: R;
 }
-
-export type ProviderOptions<F = any, T extends Class = Class<F>> =
-  | UseClassProviderOptions
-  | UseValueProviderOptions
-  | UseExistingProviderOptions
-  | UseFactoryProviderOptions
-  | T;
